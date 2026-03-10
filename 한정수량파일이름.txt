@@ -1,0 +1,22 @@
+한정수량 | 대한한우        | 힘내라농가
+-------- | --------------- | ---------------
+50       | dh-50.html      | hn-50.html
+100      | dh-100.html     | hn-100.html
+200      | dh-200.html     | hn-200.html
+300      | dh-300.html     | hn-300.html
+500      | dh-500.html     | hn-500.html
+600      | dh-600.html     | hn-600.html
+700      | dh-700.html     | hn-700.html
+800      | dh-800.html     | hn-800.html
+900      | dh-900.html     | hn-900.html
+1000     | dh-1000.html    | hn-1000.html
+
+
+=======================================
+timer-iframe-code.txt 파일의 "파일이름" 부분을 위의 파일이름으로 교체해주시면 됩니다.
+
+예시)
+<div style="width:100%;max-width:100%;height:580px;overflow:hidden;">
+  <iframe src="https://cpspgo.github.io/zet_timer/hn-300.html" style="width:100%;height:700px;border:none;display:block;" scrolling="no" loading="lazy">
+  </iframe>
+</div>
