@@ -272,14 +272,6 @@
 
 <div class="timer-wrap">
   <div class="timer-container">
-    <div class="viewer-badge">
-      <span class="viewer-dot"></span>
-      <span
-        ><strong id="tw-viewer-count">1,422</strong>명이 대한한우에서 쇼핑
-        중</span
-      >
-    </div>
-
     <div class="sale-badge">전국최저가 도전!</div>
     <div class="title">오늘만 출고 가능 한정물량</div>
 
@@ -306,8 +298,7 @@
     <div class="card-wide">
       <div class="card-inner card-soft">
         <div class="stock-warning-title">
-          ⚠️ 마감 임박! 한정수량:
-          <span class="stock-count" id="tw-stock-count">300</span>박스
+          ⚠️ 시즌 한정! 이 시기 놓치면 내년까지 기다리셔야해요
         </div>
         <div class="stock-warning-sub">
           주문량이 많은 상품으로 조기마감 될 수 있습니다.
@@ -355,28 +346,35 @@
 
 <script>
   (function () {
-    var INITIAL_STOCK = 300;
+    var INITIAL_STOCK = 50;
 
     // =============================================
-    // 시간대별 재고 CHECKPOINTS
-    // [시작분, 종료분, 시작재고, 종료재고]
+    // 시간대별 재고 CHECKPOINTS (오전 10시 시작 기준)
     // =============================================
     var CHECKPOINTS = [
-      [0, 360, 300, 294],
-      [360, 540, 294, 282],
-      [540, 720, 282, 204],
-      [720, 900, 204, 129],
-      [900, 1080, 129, 75],
-      [1080, 1200, 75, 45],
-      [1200, 1320, 45, 18],
-      [1320, 1439, 18, 1],
+      [0, 360, 50, 49],
+      [360, 540, 49, 47],
+      [540, 720, 47, 34],
+      [720, 900, 34, 22],
+      [900, 1080, 22, 12],
+      [1080, 1200, 12, 8],
+      [1200, 1320, 8, 3],
+      [1320, 1410, 3, 1],
+      [1410, 1440, 1, 1],
     ];
 
     function calcCurrentStock() {
       var now = new Date();
-      var midnight = new Date(now);
-      midnight.setHours(0, 0, 0, 0);
-      var elapsedMin = (now - midnight) / 60000;
+      // 기준 오전 10시 설정
+      var baseline = new Date(now);
+      baseline.setHours(10, 0, 0, 0);
+
+      // 현재 시간이 오전 10시 이전이라면, 어제 오전 10시를 기준점으로 잡음
+      if (now < baseline) {
+        baseline.setDate(baseline.getDate() - 1);
+      }
+
+      var elapsedMin = (now - baseline) / 60000;
       for (var i = 0; i < CHECKPOINTS.length; i++) {
         var cp = CHECKPOINTS[i];
         if (elapsedMin >= cp[0] && elapsedMin < cp[1]) {
@@ -398,9 +396,11 @@
 
     function twCheckStock() {
       var now = new Date();
-      var midnight = new Date(now);
-      midnight.setHours(0, 0, 0, 0);
-      var elapsedSec = (now - midnight) / 1000;
+      var baseline = new Date(now);
+      baseline.setHours(10, 0, 0, 0);
+      if (now < baseline) baseline.setDate(baseline.getDate() - 1);
+
+      var elapsedSec = (now - baseline) / 1000;
       if (elapsedSec < 10) {
         twRenderStock(INITIAL_STOCK);
         return;
@@ -410,20 +410,30 @@
     }
 
     // =============================================
-    // 타이머 (자정까지 카운트다운)
+    // 타이머 (매일 오전 10시 기준 24시간 카운트다운)
     // =============================================
     function twUpdateTimer() {
       var now = new Date();
-      var midnight = new Date(now);
-      midnight.setHours(24, 0, 0, 0);
-      var remainingMs = midnight - now;
+      var target = new Date(now);
+
+      // 오늘 오전 10시 설정
+      target.setHours(10, 0, 0, 0);
+
+      // 현재 시간이 오전 10시를 지났다면, 다음 날 오전 10시가 마감 목표가 됨
+      if (now >= target) {
+        target.setDate(target.getDate() + 1);
+      }
+
+      var remainingMs = target - now;
       if (remainingMs < 0) remainingMs = 0;
+
       var ticks = Math.floor(remainingMs / 100);
       var tenth = ticks % 10;
       var totalSec = Math.floor(ticks / 10);
       var hours = Math.floor(totalSec / 3600);
       var minutes = Math.floor((totalSec % 3600) / 60);
       var secs = totalSec % 60;
+
       document.getElementById("tw-hours").textContent = String(hours).padStart(
         2,
         "0",
@@ -440,14 +450,6 @@
 
     // =============================================
     // 실시간 뷰어 수 - 시간대별 범위
-    // 00~03시:  650~ 950명
-    // 03~06시:  330~ 550명
-    // 06~09시:  880~1100명
-    // 09~12시: 2000~2350명
-    // 12~15시: 2700~3050명
-    // 15~18시: 4300~4800명
-    // 18~21시: 2270~2830명
-    // 21~24시: 1113~1550명
     // =============================================
     function twGetViewerRange() {
       var h = new Date().getHours();
