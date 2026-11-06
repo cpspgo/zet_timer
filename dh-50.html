@@ -30,90 +30,28 @@
     max-width: 480px;
   }
 
-  .viewer-badge {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    width: fit-content;
-    max-width: 100%;
-    margin: 0 auto 12px;
-    background: rgba(255, 255, 255, 0.85);
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    border-radius: 999px;
-    padding: 7px 16px;
-    font-size: clamp(12px, 3.1vw, 14px);
-    color: #6b7280;
-    font-weight: 600;
-    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
-    backdrop-filter: blur(6px);
-    flex-wrap: wrap;
-    row-gap: 2px;
-  }
-
-  .viewer-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #22c55e;
-    animation: twDotPulse 1.6s ease-in-out infinite;
-    flex-shrink: 0;
-  }
-  @keyframes twDotPulse {
-    0%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.55;
-      transform: scale(1.45);
-    }
-  }
-
-  @keyframes twFadeNum {
-    0% {
-      opacity: 0.25;
-      transform: translateY(-2px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  .viewer-count-anim {
-    display: inline-block;
-    animation: twFadeNum 0.35s ease;
-  }
-
-  .viewer-badge strong#tw-viewer-count {
-    font-size: 17px;
-    font-weight: 900;
-    color: #111827;
-    letter-spacing: -0.2px;
-    margin-right: 4px;
-  }
-
   .sale-badge {
     display: block;
     width: fit-content;
+    max-width: 100%;
     margin: 0 auto 10px;
     background: #ef5a6f;
     color: #fff;
     padding: 7px 16px;
     border-radius: 999px;
-    font-size: 12px;
+    font-size: clamp(12px, 3.4vw, 14px);
     font-weight: 900;
-    letter-spacing: 0.6px;
+    letter-spacing: -0.2px;
     box-shadow: 0 12px 24px rgba(239, 90, 111, 0.18);
   }
 
   .title {
-    font-size: clamp(20px, 5.4vw, 24px);
+    font-size: clamp(18px, 5vw, 23px);
     font-weight: 900;
     color: #111827;
     letter-spacing: -0.6px;
     margin-bottom: 16px;
+    word-break: keep-all;
   }
 
   .countdown {
@@ -164,12 +102,70 @@
   }
 
   .price-warning {
-    font-size: clamp(12px, 3.2vw, 13.5px);
+    font-size: clamp(12px, 3.4vw, 15px);
     color: #ef5a6f;
     font-weight: 800;
-    margin-bottom: 14px;
-    letter-spacing: -0.2px;
-    background: transparent;
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+    word-break: keep-all;
+  }
+
+  /* 하루 주문 가능수량 배지 */
+  .limit-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(6px, 2vw, 10px);
+    width: fit-content; /* 가로: 글자 크기에 맞춰 좁게 */
+    max-width: 100%;
+    margin: 0 auto 18px;
+    padding: clamp(6px, 1.8vw, 9px) clamp(16px, 4.5vw, 22px); /* 세로 / 가로 여백 */
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ff2d6f 0%, #e8174f 100%);
+    color: #fff;
+    font-size: clamp(16px, 4.9vw, 22px);
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+    box-shadow:
+      0 0 24px rgba(255, 45, 111, 0.45),
+      0 10px 24px rgba(239, 90, 111, 0.25);
+  }
+  .limit-pill .limit-num {
+    font-style: italic;
+    color: #ffe500;
+    font-weight: 900;
+    display: inline-block;
+    animation: twBlink 1s ease-in-out infinite !important;
+  }
+  @keyframes twBlink {
+    0%,
+    100% {
+      opacity: 1;
+      text-shadow: 0 0 10px rgba(255, 229, 0, 0.8);
+    }
+    50% {
+      opacity: 0.25;
+      text-shadow: none;
+    }
+  }
+  .limit-pill .spark {
+    font-size: 0.9em;
+    animation: twSpark 1.6s ease-in-out infinite;
+  }
+  .limit-pill .spark:last-child {
+    animation-delay: 0.8s;
+  }
+  @keyframes twSpark {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(1.3);
+    }
   }
 
   .card-soft {
@@ -186,24 +182,31 @@
     padding: 0 6px;
   }
   .card-wide > .card-inner {
-    border-radius: 22px;
+    border-radius: 26px;
     padding: 16px 18px;
   }
 
   .stock-warning-title {
-    font-size: 15px;
+    font-size: clamp(14px, 4vw, 17px);
     font-weight: 900;
     color: #111827;
     margin-bottom: 6px;
+    letter-spacing: -0.3px;
+    word-break: keep-all;
   }
-  .stock-warning-title .stock-count {
-    color: #ef5a6f;
+  .stock-warning-title .arrow {
+    display: inline-block;
+    font-size: 1.3em;
     font-weight: 900;
+    line-height: 1;
+    vertical-align: -0.05em;
+    -webkit-text-stroke: 1.2px currentColor; /* 화살표 선 두께 */
   }
   .stock-warning-sub {
     font-size: 13px;
     color: #9aa0a6;
     font-weight: 700;
+    word-break: keep-all;
   }
 
   .satisfaction-header {
@@ -268,12 +271,18 @@
       padding: 14px 14px;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .limit-pill .spark {
+      animation: none;
+    }
+  }
 </style>
 
 <div class="timer-wrap">
   <div class="timer-container">
-    <div class="sale-badge">전국최저가 도전!</div>
-    <div class="title">다음 출고 접수 마감까지</div>
+    <div class="sale-badge">대한한우 전국 왕도매가 도전!</div>
+    <div class="title">다음 출고 접수 마감까지 (서두르세요)</div>
 
     <div class="countdown">
       <div class="time-box">
@@ -294,13 +303,19 @@
     </div>
 
     <div class="price-warning">
-      산지 수확량과 시세에 따라 가격이 달라질 수 있어요!
+      단골장사를 위해 3중선별 최상의 품질유지를 위한 한정출고!
+    </div>
+
+    <div class="limit-pill">
+      <span class="spark">✦</span>
+      <span>하루 주문 가능수량: <span class="limit-num"><span id="tw-limit">100</span>박스!</span></span>
+      <span class="spark">✦</span>
     </div>
 
     <div class="card-wide">
       <div class="card-inner card-soft">
         <div class="stock-warning-title">
-          ⚠️ 시즌 한정! 이 시기 놓치면 내년까지 기다리셔야해요
+          ⚠️ 마진은 내리고<span class="arrow">↓</span> 만족도는 올리고<span class="arrow">↑</span> 가격은 저렴하게!
         </div>
         <div class="stock-warning-sub">
           주문량이 많은 상품으로 조기마감 될 수 있습니다.
@@ -326,7 +341,7 @@
 
         <div class="satisfaction-row">
           <div class="satisfaction-label-row">
-            <div class="satisfaction-label">고객만족도</div>
+            <div class="satisfaction-label">고객후기평점도</div>
           </div>
           <div class="satisfaction-bar">
             <div class="satisfaction-fill" id="tw-satisfaction-fill"></div>
@@ -348,68 +363,12 @@
 
 <script>
   (function () {
-    var INITIAL_STOCK = 50;
-
     // =============================================
-    // 시간대별 재고 CHECKPOINTS (오전 10시 시작 기준)
+    // ★ 하루 주문 가능수량
     // =============================================
-    var CHECKPOINTS = [
-      [0, 360, 50, 49],
-      [360, 540, 49, 47],
-      [540, 720, 47, 34],
-      [720, 900, 34, 22],
-      [900, 1080, 22, 12],
-      [1080, 1200, 12, 8],
-      [1200, 1320, 8, 3],
-      [1320, 1410, 3, 1],
-      [1410, 1440, 1, 1],
-    ];
-
-    function calcCurrentStock() {
-      var now = new Date();
-      // 기준 오전 10시 설정
-      var baseline = new Date(now);
-      baseline.setHours(10, 0, 0, 0);
-
-      // 현재 시간이 오전 10시 이전이라면, 어제 오전 10시를 기준점으로 잡음
-      if (now < baseline) {
-        baseline.setDate(baseline.getDate() - 1);
-      }
-
-      var elapsedMin = (now - baseline) / 60000;
-      for (var i = 0; i < CHECKPOINTS.length; i++) {
-        var cp = CHECKPOINTS[i];
-        if (elapsedMin >= cp[0] && elapsedMin < cp[1]) {
-          var progress = (elapsedMin - cp[0]) / (cp[1] - cp[0]);
-          return Math.round(cp[2] - progress * (cp[2] - cp[3]));
-        }
-      }
-      if (elapsedMin < CHECKPOINTS[0][0]) return INITIAL_STOCK;
-      return CHECKPOINTS[CHECKPOINTS.length - 1][3];
-    }
-
-    var twStock = calcCurrentStock();
-
-    function twRenderStock(val) {
-      if (val !== undefined) twStock = val;
-      var el = document.getElementById("tw-stock-count");
-      if (el) el.textContent = twStock;
-    }
-
-    function twCheckStock() {
-      var now = new Date();
-      var baseline = new Date(now);
-      baseline.setHours(10, 0, 0, 0);
-      if (now < baseline) baseline.setDate(baseline.getDate() - 1);
-
-      var elapsedSec = (now - baseline) / 1000;
-      if (elapsedSec < 10) {
-        twRenderStock(INITIAL_STOCK);
-        return;
-      }
-      var calculated = calcCurrentStock();
-      if (calculated !== twStock) twRenderStock(calculated);
-    }
+    var DAILY_LIMIT = 50;
+    var limitEl = document.getElementById("tw-limit");
+    if (limitEl) limitEl.textContent = DAILY_LIMIT;
 
     // =============================================
     // 타이머 (매일 오전 10시 기준 24시간 카운트다운)
@@ -418,10 +377,10 @@
       var now = new Date();
       var target = new Date(now);
 
-      // 오늘 오전 10시 설정
+      // 오늘 오전 10시
       target.setHours(10, 0, 0, 0);
 
-      // 현재 시간이 오전 10시를 지났다면, 다음 날 오전 10시가 마감 목표가 됨
+      // 이미 지났다면 다음 날 오전 10시가 마감
       if (now >= target) {
         target.setDate(target.getDate() + 1);
       }
@@ -436,65 +395,10 @@
       var minutes = Math.floor((totalSec % 3600) / 60);
       var secs = totalSec % 60;
 
-      document.getElementById("tw-hours").textContent = String(hours).padStart(
-        2,
-        "0",
-      );
-      document.getElementById("tw-minutes").textContent = String(
-        minutes,
-      ).padStart(2, "0");
-      document.getElementById("tw-seconds").textContent = String(secs).padStart(
-        2,
-        "0",
-      );
+      document.getElementById("tw-hours").textContent = String(hours).padStart(2, "0");
+      document.getElementById("tw-minutes").textContent = String(minutes).padStart(2, "0");
+      document.getElementById("tw-seconds").textContent = String(secs).padStart(2, "0");
       document.getElementById("tw-tenth").textContent = String(tenth);
-    }
-
-    // =============================================
-    // 실시간 뷰어 수 - 시간대별 범위
-    // =============================================
-    function twGetViewerRange() {
-      var h = new Date().getHours();
-      if (h >= 0 && h < 3) return [650, 950];
-      if (h >= 3 && h < 6) return [330, 550];
-      if (h >= 6 && h < 9) return [880, 1100];
-      if (h >= 9 && h < 12) return [2000, 2350];
-      if (h >= 12 && h < 15) return [2700, 3050];
-      if (h >= 15 && h < 18) return [4300, 4800];
-      if (h >= 18 && h < 21) return [2270, 2830];
-      return [1113, 1550];
-    }
-
-    var randInt = function (min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    };
-
-    var twViewerCount = (function () {
-      var r = twGetViewerRange();
-      return randInt(r[0], r[1]);
-    })();
-
-    (function initViewer() {
-      var el = document.getElementById("tw-viewer-count");
-      if (el) el.textContent = twViewerCount.toLocaleString();
-    })();
-
-    function twUpdateViewers() {
-      var r = twGetViewerRange();
-      var pct = (Math.random() * 0.4 + 0.3) / 100;
-      var change = Math.max(1, Math.round(twViewerCount * pct));
-      var dir = Math.random() < 0.5 ? 1 : -1;
-      twViewerCount = Math.min(
-        r[1],
-        Math.max(r[0], twViewerCount + dir * change),
-      );
-      var el = document.getElementById("tw-viewer-count");
-      if (el) {
-        el.textContent = twViewerCount.toLocaleString();
-        el.classList.remove("viewer-count-anim");
-        void el.offsetWidth;
-        el.classList.add("viewer-count-anim");
-      }
     }
 
     // =============================================
@@ -512,12 +416,7 @@
     }
 
     twUpdateTimer();
-    twUpdateViewers();
     twInitSatisfaction();
-    twRenderStock();
-
     setInterval(twUpdateTimer, 100);
-    setInterval(twUpdateViewers, 2000);
-    setInterval(twCheckStock, 5000);
   })();
 </script>
